@@ -48,7 +48,7 @@ public class EmployeTest {
                 "1,'T12345',0.5,0,500.0",
                 "2,'T12345',1.0,0,2300.0",
                 "1,'T12345',1.0,2,1200.0"})
-    public void testGetPrimeAnnuellr(Integer perforance,String matricule,Double tauxActivite,Long nbAnneesAnciennete,Double primeAttendue){
+    public void testGetPrimeAnnuelle(Integer perforance,String matricule,Double tauxActivite,Long nbAnneesAnciennete,Double primeAttendue){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh",matricule, LocalDate.now().minusYears(nbAnneesAnciennete),1500d,perforance,tauxActivite);
@@ -56,6 +56,16 @@ public class EmployeTest {
         Double prime = employe.getPrimeAnnuelle();
         //THEN
         Assertions.assertThat(prime).isEqualTo(primeAttendue);
+    }
+
+    @Test
+    public void testGetPrimeAnnuelleMatriculeNull(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        //WHEN
+        Double prime = employe.getPrimeAnnuelle();
+        //THEN
+        Assertions.assertThat(prime).isEqualTo(1000.0);
     }
 
 }
