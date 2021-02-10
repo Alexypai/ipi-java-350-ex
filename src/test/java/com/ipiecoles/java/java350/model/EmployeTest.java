@@ -47,7 +47,10 @@ public class EmployeTest {
     @CsvSource({"1,'T12345',1.0,0,1000.0",
                 "1,'T12345',0.5,0,500.0",
                 "2,'T12345',1.0,0,2300.0",
-                "1,'T12345',1.0,2,1200.0"})
+                "1,'T12345',1.0,2,1200.0",
+                "2,'T12345',1.0,1,2400.0",
+                "1,'M12345',1.0,0,1700.0",
+                "1,'M12345',1.0,3,2000.0"})
     public void testGetPrimeAnnuelle(Integer perforance,String matricule,Double tauxActivite,Long nbAnneesAnciennete,Double primeAttendue){
 
         //GIVEN
