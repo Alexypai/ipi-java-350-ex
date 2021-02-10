@@ -63,7 +63,9 @@ public class EmployeService {
         //Création et sauvegarde en BDD de l'employé.
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
-        return employeRepository.save(employe);
+        employeRepository.save(employe);
+
+        return employe;
 
     }
 

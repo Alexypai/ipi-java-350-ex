@@ -15,17 +15,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class EmployeServiceTest {
 
-    @InjectMocks
+    @Autowired
     private EmployeService employeService;
 
-    @Mock
+    @Autowired
     private EmployeRepository employeRepository;
+
 
     @Test
     public void testEmbauchePremierEmploye() throws EmployeException {
@@ -35,11 +38,10 @@ public class EmployeServiceTest {
         Poste poste = Poste.TECHNICIEN;
         NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
         Double tempsPartiel = 1.0;
-        Mockito.when(employeRepository.save(Mockito.any(Employe.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
         //When
-        Employe employe = employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
+        employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
         //Then
-//        Employe employe = employeRepository.findByMatricule("T00001");
+        Employe employe = employeRepository.findByMatricule("T00001");
         Assertions.assertThat(employe).isNotNull();
         Assertions.assertThat(employe.getNom()).isEqualTo(nom);
         Assertions.assertThat(employe.getPrenom()).isEqualTo(prenom);
