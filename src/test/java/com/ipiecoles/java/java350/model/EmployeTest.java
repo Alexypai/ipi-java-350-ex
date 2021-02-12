@@ -10,6 +10,8 @@ import java.time.LocalDate;
 
 public class EmployeTest {
 
+    //Nouveau commit pour mettre a jour la branche SonarCloud
+
     @Test
     public void testGetAnneeAcienneteDateEmbaucheNull(){
         //GIVEN
