@@ -6,6 +6,8 @@ import com.ipiecoles.java.java350.model.NiveauEtude;
 import com.ipiecoles.java.java350.model.Poste;
 import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -49,5 +51,11 @@ public class EmployeServiceTest {
         Assertions.assertThat(employe.getTempsPartiel()).isEqualTo(1.0);
         Assertions.assertThat(employe.getDateEmbauche()).isEqualTo(LocalDate.now());
         Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
+    }
+
+    @BeforeEach
+    @AfterEach
+    public void purgeBDD(){
+        employeRepository.deleteAll();
     }
 }
