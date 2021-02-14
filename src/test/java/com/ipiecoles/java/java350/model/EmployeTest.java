@@ -76,34 +76,48 @@ public class EmployeTest {
     @Test
     public void testAaugmenterSalairePourcentage0(){
         //GIVEN
-        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1700d,1,1.0);
         double pourcentage = 0.0;
         //WHEN
         double NewSalaire = employe.augmenterSalaire(pourcentage);
         //THEN
-        Assertions.assertThat(NewSalaire).isEqualTo(1500d);
+        Assertions.assertThat(NewSalaire).isEqualTo(1700d);
     }
 
     @Test
     public void testAaugmenterSalairePourcentageNull(){
         //GIVEN
-        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1700d,1,1.0);
         Double pourcentage = null;
         //WHEN
         Double NewSalaire = employe.augmenterSalaire(pourcentage);
         //THEN
-        Assertions.assertThat(NewSalaire).isEqualTo(1500d);
+        Assertions.assertThat(NewSalaire).isEqualTo(1700d);
+    }
+
+    @Test
+    public void testAaugmenterSalaireSalaireNull(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),null,1,1.0);
+        Double pourcentage = 0.5;
+        //WHEN
+        Double NewSalaire = employe.augmenterSalaire(pourcentage);
+        Double salaireAttendu = Math.round(Entreprise.SALAIRE_BASE * pourcentage) + Entreprise.SALAIRE_BASE;
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(salaireAttendu);
     }
 
     @ParameterizedTest(name = "pourcentage{0}, salaire {1}, NewSalaire{2}")
-    @CsvSource({"10,'1500d',16500",
-                "-10,'1500d',1500",
-                "0.0001,'1500d',1500.15",
-                "-0.001,'1500d',1500",
-                "0.00001,'1500d',1500"})
+    @CsvSource({"10,'1500d',16733.22",
+                "-10,'1700d',1700",
+                "0.001,'1700d',1702",
+                "-0.001,'1700d',1700",
+                "0.1,'1500d',1673.22",
+                "-0.1,'1500d',1521.22",
+                "0.00001,'1700d',1700"})
     public void testAaugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double NewSalaire){
         //GIVEN
-        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),salaire,1,1.0);
         //WHEN
         Double SalaireAttendu = employe.augmenterSalaire(pourcentage);
         //THEN

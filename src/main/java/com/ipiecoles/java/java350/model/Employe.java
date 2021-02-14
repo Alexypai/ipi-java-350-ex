@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -142,15 +143,29 @@ public class Employe {
         return prime * this.tempsPartiel;
     }
 
-    //Augmenter salaire
+    /**
+     * Calcul d'une augmentation de salaire selon la règle :
+     * Pour tous les employés, determination d'un pourcentage d'augmentation :
+     * arrondi(pourcentage dû * son salaire) + son salaire
+     *
+     * L'augmentation d'un salaire ne peut etre inferieur au salaire de base
+     *
+     * @param pourcentage correspondant au pourcentage d'augmentation attribué a l'employé
+     *
+     * @return l'augmentation de salaire de l'employé
+     */
     public Double augmenterSalaire(Double pourcentage){
+        if (this.salaire == null || salaire <= Entreprise.SALAIRE_BASE){
+            salaire = Entreprise.SALAIRE_BASE;
+        }
         if (pourcentage == null){
             pourcentage = 0.0;
         }
-        if (pourcentage < 0.0001 ){
+        if (pourcentage < 0.001 ){
             return salaire;
         }
-       return (pourcentage * this.salaire) + this.salaire;
+        Double NewSalaire = Math.round(pourcentage * salaire) + salaire;
+        return NewSalaire;
     }
 
     public Long getId() {
