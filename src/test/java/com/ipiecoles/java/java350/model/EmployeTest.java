@@ -73,4 +73,43 @@ public class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(1000.0);
     }
 
+    @Test
+    public void testAaugmenterSalairePourcentage0(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        double pourcentage = 0.0;
+        //WHEN
+        double NewSalaire = employe.augmenterSalaire(pourcentage);
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(1500d);
+    }
+
+    @Test
+    public void testAaugmenterSalairePourcentageNull(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        Double pourcentage = null;
+        //WHEN
+        Double NewSalaire = employe.augmenterSalaire(pourcentage);
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(1500d);
+    }
+
+    @ParameterizedTest(name = "pourcentage{0}, salaire {1}, NewSalaire{2}")
+    @CsvSource({"10,'1500d',16500",
+                "-10,'1500d',1500",
+                "0.0001,'1500d',1500.15",
+                "-0.001,'1500d',1500",
+                "0.00001,'1500d',1500"})
+    public void testAaugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double NewSalaire){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        //WHEN
+        Double SalaireAttendu = employe.augmenterSalaire(pourcentage);
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(SalaireAttendu);
+    }
+
+
+
 }

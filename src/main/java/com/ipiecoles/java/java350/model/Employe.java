@@ -143,7 +143,15 @@ public class Employe {
     }
 
     //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    public Double augmenterSalaire(Double pourcentage){
+        if (pourcentage == null){
+            pourcentage = 0.0;
+        }
+        if (pourcentage < 0.0001 ){
+            return salaire;
+        }
+       return (pourcentage * this.salaire) + this.salaire;
+    }
 
     public Long getId() {
         return id;
