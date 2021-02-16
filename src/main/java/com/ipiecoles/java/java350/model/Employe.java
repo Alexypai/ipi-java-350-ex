@@ -80,8 +80,6 @@ public class Employe {
         int nbJoursAnnee = dateReference.isLeapYear() ? 366 : 365;
         int nbSamediDimanche = 104;
         switch (LocalDate.of(dateReference.getYear(), 1, 1).getDayOfWeek()) {
-            default :
-                nbSamediDimanche = 104;
             case THURSDAY:
                 if (dateReference.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 1;
@@ -96,9 +94,10 @@ public class Employe {
                 }
                 break;
             case SATURDAY:
-                if (dateReference.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 1;
-                }
+                break;
+            default :
+                nbSamediDimanche = 104;
                 break;
         }
         int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
