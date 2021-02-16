@@ -112,8 +112,13 @@ public class EmployeService {
         if(employe == null){
             throw new EmployeException("Le matricule " + matricule + " n'existe pas !");
         }
+        //Ajout de la condition si une performance est null ou inférieur a 1
+        if(employe.getPerformance() == null || employe.getPerformance() < 1 ){
+            throw new EmployeException("La performance ne peut être null ou inférieur a 1 !");
+        }
 
         Integer performance = Entreprise.PERFORMANCE_BASE;
+
         //Cas 2
         if(caTraite >= objectifCa*0.8 && caTraite < objectifCa*0.95){
             performance = Math.max(Entreprise.PERFORMANCE_BASE, employe.getPerformance() - 2);
@@ -133,10 +138,14 @@ public class EmployeService {
         //Si autre cas, on reste à la performance de base.
 
         //Calcul de la performance moyenne
+
+        // Possibilité de faire une condition :
+        // si la BDD possede plus d'un employé alors caluler la moyenne
         Double performanceMoyenne = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
-        if(performanceMoyenne != null && performance > performanceMoyenne){
+        if (performanceMoyenne != null && performance > performanceMoyenne) {
             performance++;
         }
+
 
         //Affectation et sauvegarde
         employe.setPerformance(performance);

@@ -1,12 +1,9 @@
 package com.ipiecoles.java.java350.model;
 
-import org.apache.logging.log4j.util.StringBuilders;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -83,7 +80,10 @@ public class Employe {
             case THURSDAY:
                 if (dateReference.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 1;
+                }else{
+                    nbSamediDimanche = 104;
                 }
+
                 break;
             case FRIDAY:
                 if (dateReference.isLeapYear()) {
