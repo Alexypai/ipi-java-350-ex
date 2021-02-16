@@ -124,6 +124,22 @@ public class EmployeTest {
         Assertions.assertThat(NewSalaire).isEqualTo(SalaireAttendu);
     }
 
+    @ParameterizedTest(name = "dateReference{0},rtt{1}")
+    @CsvSource({"2019-01-01,8",
+                "2021-01-01,10",
+                "2022-01-01,11",
+                "2032-01-01,11"})
+    public void testGetNbrRtt(LocalDate dateReference, int rtt){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        //WHEN
+        //Double SalaireAttendu = employe.augmenterSalaire(pourcentage);
+        int nbRtt = employe.getNbRtt(dateReference);
+        //THEN
+        Assertions.assertThat(nbRtt).isEqualTo(rtt);
+
+    }
+
 
 
 }

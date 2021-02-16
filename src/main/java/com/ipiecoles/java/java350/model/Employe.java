@@ -80,6 +80,8 @@ public class Employe {
         int nbJoursAnnee = dateReference.isLeapYear() ? 366 : 365;
         int nbSamediDimanche = 104;
         switch (LocalDate.of(dateReference.getYear(), 1, 1).getDayOfWeek()) {
+            default :
+                nbSamediDimanche = 104;
             case THURSDAY:
                 if (dateReference.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 1;
@@ -94,7 +96,9 @@ public class Employe {
                 }
                 break;
             case SATURDAY:
-                nbSamediDimanche = nbSamediDimanche + 1;
+                if (dateReference.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
                 break;
         }
         int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
@@ -164,8 +168,8 @@ public class Employe {
         if (pourcentage < 0.001 ){
             return salaire;
         }
-        Double NewSalaire = Math.round(pourcentage * salaire) + salaire;
-        return NewSalaire;
+        return Math.round(pourcentage * salaire) + salaire;
+
     }
 
     public Long getId() {
