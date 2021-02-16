@@ -127,6 +127,7 @@ public class EmployeTest {
                 "2019-01-01,8",
                 "2021-01-01,10",
                 "2022-01-01,10",
+                "2026-01-01,9",
                 "2032-01-01,11"})
     public void testGetNbrRtt(LocalDate dateReference, int rtt){
         //GIVEN
