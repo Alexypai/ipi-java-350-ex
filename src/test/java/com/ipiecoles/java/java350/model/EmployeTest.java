@@ -72,6 +72,16 @@ public class EmployeTest {
     }
 
     @Test
+    public void testGetPrimeAnnuellePerformanceNull(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,null,1.0);
+        //WHEN
+        Double prime = employe.getPrimeAnnuelle();
+        //THEN
+        Assertions.assertThat(prime).isEqualTo(1000.0);
+    }
+
+    @Test
     public void testAaugmenterSalairePourcentage0(){
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),1700d,1,1.0);
@@ -138,6 +148,16 @@ public class EmployeTest {
         //THEN
         Assertions.assertThat(nbRtt).isEqualTo(rtt);
 
+    }
+
+    @Test
+    public void getNbConges(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),null,1,1.0);
+        //WHEN
+        Integer conges = employe.getNbConges();
+        //THEN
+        Assertions.assertThat(conges).isEqualTo(25);
     }
 
 

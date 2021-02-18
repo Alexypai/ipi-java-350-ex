@@ -23,8 +23,6 @@ public class EmployeServiceTest {
 
     @Autowired
     private EmployeRepository employeRepository;
-    private Object EmployeException;
-
 
     @Test
     public void testEmbauchePremierEmploye() throws EmployeException {
@@ -46,6 +44,28 @@ public class EmployeServiceTest {
         Assertions.assertThat(employe.getDateEmbauche()).isEqualTo(LocalDate.now());
         Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
     }
+
+    @Test
+    public void testEmbauchePremierEmployeTempsNull() throws EmployeException {
+        //Given Pas d'employés en base
+        String nom = "Doe";
+        String prenom = "John";
+        Poste poste = Poste.TECHNICIEN;
+        NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
+        Double tempsPartiel = null;
+        //When
+        employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
+        //Then
+        Employe employe = employeRepository.findByMatricule("T00001");
+        Assertions.assertThat(employe).isNotNull();
+        Assertions.assertThat(employe.getNom()).isEqualTo(nom);
+        Assertions.assertThat(employe.getPrenom()).isEqualTo(prenom);
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(1825.464);
+        Assertions.assertThat(employe.getTempsPartiel()).isEqualTo(null);
+        Assertions.assertThat(employe.getDateEmbauche()).isEqualTo(LocalDate.now());
+        Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
+    }
+
 
     @ParameterizedTest(name = "Performance{0}, matricule {1} objectifCa{2}, Catraite {3}, majPerformance {4}")
     @CsvSource({"1,'C12345',1000,0,1",
