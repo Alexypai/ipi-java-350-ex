@@ -82,6 +82,28 @@ public class EmployeTest {
     }
 
     @Test
+    public void testSetterEmploye(){
+        //GIVEN
+        Employe employe = new Employe();
+        employe.setId(1L);
+        employe.setNom("Alexy");
+        employe.setPrenom("Paiva");
+        employe.setMatricule("T00001");
+        employe.setSalaire(10000.0);
+        employe.setTempsPartiel(1.0);
+        employe.setDateEmbauche(LocalDate.now());
+        //WHEN
+        Double prime = employe.getPrimeAnnuelle();
+        //THEN
+        Assertions.assertThat(employe.getId()).isEqualTo(1);
+        Assertions.assertThat(employe.getNom()).isEqualTo("Alexy");
+        Assertions.assertThat(employe.getPrenom()).isEqualTo("Paiva");
+        Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(10000.0);
+        Assertions.assertThat(employe.getTempsPartiel()).isEqualTo(1.0);
+    }
+
+    @Test
     public void testAaugmenterSalairePourcentage0(){
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),1700d,1,1.0);
