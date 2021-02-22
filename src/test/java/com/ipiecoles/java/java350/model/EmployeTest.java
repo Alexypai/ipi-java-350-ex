@@ -6,7 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import java.time.LocalDate;
 
-public class EmployeTest {
+class EmployeTest {
 
     //Nouveau commit pour mettre a jour la branche SonarCloud
 
@@ -93,7 +93,7 @@ public class EmployeTest {
         employe.setTempsPartiel(1.0);
         employe.setDateEmbauche(LocalDate.now());
         //WHEN
-        Double prime = employe.getPrimeAnnuelle();
+
         //THEN
         Assertions.assertThat(employe.getId()).isEqualTo(1);
         Assertions.assertThat(employe.getNom()).isEqualTo("Alexy");
