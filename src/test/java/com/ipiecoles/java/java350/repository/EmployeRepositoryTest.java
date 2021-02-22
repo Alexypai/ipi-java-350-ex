@@ -69,7 +69,7 @@ class EmployeRepositoryTest {
         employeRepository.save(new Employe("Doe", "John", "T06432", LocalDate.now(), 1500d, null, 1.0));        //WHEN
         Double moyenne = employeRepository.avgPerformanceWhereMatriculeStartsWith("T");
         //THEN
-        Assertions.assertThat(moyenne).isEqualTo(null);
+        Assertions.assertThat(moyenne).isNull();
     }
 
     @Test
@@ -91,7 +91,7 @@ class EmployeRepositoryTest {
         employeRepository.save(new Employe("Doe", "John", "C06432", LocalDate.now(), 1500d, 0, 1.0));        //WHEN
         Double moyenne = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
         //THEN
-        Assertions.assertThat(moyenne).isEqualTo(0);
+        Assertions.assertThat(moyenne).isZero();
     }
     @Test
     public void avgPerformanceWhereMatriculeStartsWithOneNull(){

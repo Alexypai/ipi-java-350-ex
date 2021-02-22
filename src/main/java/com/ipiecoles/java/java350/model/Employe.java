@@ -6,11 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Objects;
+
+import com.ipiecoles.java.java350.service.EmployeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 public class Employe {
 
+    private static Logger logger = LoggerFactory.getLogger(EmployeService.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -157,15 +161,26 @@ public class Employe {
      * @return l'augmentation de salaire de l'employé
      */
     public Double augmenterSalaire(Double pourcentage){
+
+        // Un salaire ne peut etre inferieur au salaire de base
         if (this.salaire == null || salaire <= Entreprise.SALAIRE_BASE){
             salaire = Entreprise.SALAIRE_BASE;
+            logger.warn("Attribution du salaire de base");
+
         }
-        if (pourcentage == null){
+        //On verifie si le pourcentage n'est pas a 0 pour ne pas avoir de divion par 0
+        if (pourcentage == null || pourcentage == 0.0){
             pourcentage = 0.0;
+            logger.warn("pourcentage incorect");
+        }else{
+            //On divise par 100 pour que l'utilisateur entre un pourcentage comme 5%, 20% etc
+            pourcentage = pourcentage/100;
         }
+        //Si le pourcentage est inferieur a 0.001 l'augmentation est négligable
         if (pourcentage < 0.001 ){
             return salaire;
         }
+        logger.info("Le salaire a été augmenté de {} %", pourcentage);
         return Math.round(pourcentage * salaire) + salaire;
 
     }

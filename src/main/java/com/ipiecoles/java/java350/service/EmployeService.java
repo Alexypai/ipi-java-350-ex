@@ -60,7 +60,6 @@ public class EmployeService {
             logger.error("L'employé de matricule {} existe déjà en BDD", matricule);
             throw new EntityExistsException("L'employé de matricule " + matricule + " existe déjà en BDD");
         }
-
         //Calcul du salaire
         Double salaire = Entreprise.COEFF_SALAIRE_ETUDES.get(niveauEtude) * Entreprise.SALAIRE_BASE;
         if(tempsPartiel != null){
@@ -71,7 +70,11 @@ public class EmployeService {
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
         employeRepository.save(employe);
-        logger.info("Employé créé : {}", employe.toString());
+        if (employe != null) {
+            logger.info("Employé créé : {}", employe.toString());
+        }else{
+            logger.error("Employé créé est vide");
+        }
 
 
 
@@ -122,33 +125,38 @@ public class EmployeService {
         //Cas 2
         if(caTraite >= objectifCa*0.8 && caTraite < objectifCa*0.95){
             performance = Math.max(Entreprise.PERFORMANCE_BASE, employe.getPerformance() - 2);
+            logger.info("performance de {} descendu de 2points", employe.toString());
         }
         //Cas 3
         else if(caTraite >= objectifCa*0.95 && caTraite <= objectifCa*1.05){
             performance = Math.max(Entreprise.PERFORMANCE_BASE, employe.getPerformance());
+            logger.info("la performance de {} reste stable ", employe.toString());
         }
         //Cas 4
         else if(caTraite <= objectifCa*1.2 && caTraite > objectifCa*1.05){
             performance = employe.getPerformance() + 1;
+            logger.info("performance de {} augmenter de 1 points", employe.toString());
         }
         //Cas 5
         else if(caTraite > objectifCa*1.2){
             performance = employe.getPerformance() + 4;
+            logger.info("performance de {} augmenter de 4 points", employe.toString());
         }
         //Si autre cas, on reste à la performance de base.
 
         //Calcul de la performance moyenne
-
         // Possibilité de faire une condition :
         // si la BDD possede plus d'un employé alors caluler la moyenne
         Double performanceMoyenne = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
         if (performanceMoyenne != null && performance > performanceMoyenne) {
             performance++;
+            logger.info("performance de {} est augmentée d'un point car sa performance est superieur a la moyenne", employe.toString());
         }
 
 
         //Affectation et sauvegarde
         employe.setPerformance(performance);
         employeRepository.save(employe);
+
     }
 }

@@ -138,12 +138,13 @@ class EmployeTest {
     }
 
     @ParameterizedTest(name = "pourcentage{0}, salaire {1}, NewSalaire{2}")
-    @CsvSource({"10,'1500d',16733.22",
+    @CsvSource({"10,'1500d',1673.22",
                 "-10,'1700d',1700",
-                "0.001,'1700d',1702",
+                "0.001,'1700d',1700",
                 "-0.001,'1700d',1700",
-                "0.1,'1500d',1673.22",
+                "0.1,'1500d',1523.22",
                 "-0.1,'1500d',1521.22",
+                "0.0,'1500d',1521.22",
                 "0.00001,'1700d',1700"})
     public void testAaugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double NewSalaire){
         //GIVEN
