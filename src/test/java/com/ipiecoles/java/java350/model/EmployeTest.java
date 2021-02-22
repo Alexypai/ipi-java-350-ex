@@ -1,14 +1,14 @@
 package com.ipiecoles.java.java350.model;
 
-import com.ipiecoles.java.java350.model.Employe;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
 import java.time.LocalDate;
 
-public class EmployeTest {
+class EmployeTest {
+
+    //Nouveau commit pour mettre a jour la branche SonarCloud
 
     @Test
     public void testGetAnneeAcienneteDateEmbaucheNull(){
@@ -70,5 +70,109 @@ public class EmployeTest {
         //THEN
         Assertions.assertThat(prime).isEqualTo(1000.0);
     }
+
+    @Test
+    public void testGetPrimeAnnuellePerformanceNull(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,null,1.0);
+        //WHEN
+        Double prime = employe.getPrimeAnnuelle();
+        //THEN
+        Assertions.assertThat(prime).isEqualTo(1000.0);
+    }
+
+    @Test
+    public void testSetterEmploye(){
+        //GIVEN
+        Employe employe = new Employe();
+        employe.setId(1L);
+        employe.setNom("Alexy");
+        employe.setPrenom("Paiva");
+        employe.setMatricule("T00001");
+        employe.setSalaire(10000.0);
+        employe.setTempsPartiel(1.0);
+        employe.setDateEmbauche(LocalDate.now());
+        //WHEN
+
+        //THEN
+        Assertions.assertThat(employe.getId()).isEqualTo(1);
+        Assertions.assertThat(employe.getNom()).isEqualTo("Alexy");
+        Assertions.assertThat(employe.getPrenom()).isEqualTo("Paiva");
+        Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(10000.0);
+        Assertions.assertThat(employe.getTempsPartiel()).isEqualTo(1.0);
+    }
+
+    @Test
+    public void testAaugmenterSalairePourcentage0(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1700d,1,1.0);
+        double pourcentage = 0.0;
+        //WHEN
+        double NewSalaire = employe.augmenterSalaire(pourcentage);
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(1700d);
+    }
+
+    @Test
+    public void testAaugmenterSalairePourcentageNull(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1700d,1,1.0);
+        Double pourcentage = null;
+        //WHEN
+        Double NewSalaire = employe.augmenterSalaire(pourcentage);
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(1700d);
+    }
+
+
+    @ParameterizedTest(name = "pourcentage{0}, salaire {1}, NewSalaire{2}")
+    @CsvSource({"10,'1500d',1673.22",
+                "-10,'1700d',1700",
+                "20,,1825.22",
+                "0.001,'1700d',1700",
+                "-0.001,'1700d',1700",
+                "0.1,'1500d',1523.22",
+                "-0.1,'1500d',1521.22",
+                "0.0,'1500d',1521.22",
+                "0.00001,'1700d',1700"})
+    public void testAaugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double NewSalaire){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),salaire,1,1.0);
+        //WHEN
+        Double SalaireAttendu = employe.augmenterSalaire(pourcentage);
+        //THEN
+        Assertions.assertThat(NewSalaire).isEqualTo(SalaireAttendu);
+    }
+
+    @ParameterizedTest(name = "dateReference{0},rtt{1}")
+    @CsvSource({"2016-01-01,9",
+                "2019-01-01,8",
+                "2021-01-01,10",
+                "2022-01-01,10",
+                "2026-01-01,9",
+                "2032-01-01,11"})
+    public void testGetNbrRtt(LocalDate dateReference, int rtt){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        //WHEN
+        //Double SalaireAttendu = employe.augmenterSalaire(pourcentage);
+        int nbRtt = employe.getNbRtt(dateReference);
+        //THEN
+        Assertions.assertThat(nbRtt).isEqualTo(rtt);
+
+    }
+
+    @Test
+    public void getNbConges(){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),null,1,1.0);
+        //WHEN
+        Integer conges = employe.getNbConges();
+        //THEN
+        Assertions.assertThat(conges).isEqualTo(25);
+    }
+
+
 
 }

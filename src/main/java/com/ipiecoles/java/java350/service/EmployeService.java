@@ -34,7 +34,7 @@ public class EmployeService {
      * @throws EmployeException Si on arrive au bout des matricules possibles
      * @throws EntityExistsException Si le matricule correspond à un employé existant
      */
-    public Employe embaucheEmploye(String nom, String prenom, Poste poste, NiveauEtude niveauEtude, Double tempsPartiel) throws EmployeException, EntityExistsException {
+    public void embaucheEmploye(String nom, String prenom, Poste poste, NiveauEtude niveauEtude, Double tempsPartiel) throws EmployeException, EntityExistsException {
     logger.info("Embauche d'un employé avec les infos suivantes : nom {}, prénom {}, poste {}, niveauEtude {}, tempsPartiel {}",  nom, prenom, poste, niveauEtude, tempsPartiel);
         //Récupération du type d'employé à partir du poste
         String typeEmploye = poste.name().substring(0,1);
@@ -57,10 +57,9 @@ public class EmployeService {
 
         //On vérifie l'existence d'un employé avec ce matricule
         if(employeRepository.findByMatricule(matricule) != null){
-            logger.error("L'employé de matricule " + matricule + " existe déjà en BDD");
+            logger.error("L'employé de matricule {} existe déjà en BDD", matricule);
             throw new EntityExistsException("L'employé de matricule " + matricule + " existe déjà en BDD");
         }
-
         //Calcul du salaire
         Double salaire = Entreprise.COEFF_SALAIRE_ETUDES.get(niveauEtude) * Entreprise.SALAIRE_BASE;
         if(tempsPartiel != null){
@@ -70,10 +69,10 @@ public class EmployeService {
         //Création et sauvegarde en BDD de l'employé.
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
-        employe = employeRepository.save(employe);
+        employeRepository.save(employe);
         logger.info("Employé créé : {}", employe.toString());
 
-        return employe;
+
 
     }
 
@@ -112,34 +111,48 @@ public class EmployeService {
         if(employe == null){
             throw new EmployeException("Le matricule " + matricule + " n'existe pas !");
         }
+        //Ajout de la condition si une performance est null ou inférieur a 1
+        if(employe.getPerformance() == null || employe.getPerformance() < 1 ){
+            throw new EmployeException("La performance ne peut être null ou inférieur a 1 !");
+        }
 
         Integer performance = Entreprise.PERFORMANCE_BASE;
+
         //Cas 2
         if(caTraite >= objectifCa*0.8 && caTraite < objectifCa*0.95){
             performance = Math.max(Entreprise.PERFORMANCE_BASE, employe.getPerformance() - 2);
+            logger.info("performance de {} descendu de 2points", employe.toString());
         }
         //Cas 3
         else if(caTraite >= objectifCa*0.95 && caTraite <= objectifCa*1.05){
             performance = Math.max(Entreprise.PERFORMANCE_BASE, employe.getPerformance());
+            logger.info("la performance de {} reste stable ", employe.toString());
         }
         //Cas 4
         else if(caTraite <= objectifCa*1.2 && caTraite > objectifCa*1.05){
             performance = employe.getPerformance() + 1;
+            logger.info("performance de {} augmenter de 1 points", employe.toString());
         }
         //Cas 5
         else if(caTraite > objectifCa*1.2){
             performance = employe.getPerformance() + 4;
+            logger.info("performance de {} augmenter de 4 points", employe.toString());
         }
         //Si autre cas, on reste à la performance de base.
 
         //Calcul de la performance moyenne
+        // Possibilité de faire une condition :
+        // si la BDD possede plus d'un employé alors caluler la moyenne
         Double performanceMoyenne = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
-        if(performanceMoyenne != null && performance > performanceMoyenne){
+        if (performanceMoyenne != null && performance > performanceMoyenne) {
             performance++;
+            logger.info("performance de {} est augmentée d'un point car sa performance est superieur a la moyenne", employe.toString());
         }
+
 
         //Affectation et sauvegarde
         employe.setPerformance(performance);
         employeRepository.save(employe);
+
     }
 }
