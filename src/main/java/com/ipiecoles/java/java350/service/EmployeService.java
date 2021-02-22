@@ -70,11 +70,7 @@ public class EmployeService {
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
         employeRepository.save(employe);
-        if (employe != null) {
-            logger.info("Employé créé : {}", employe.toString());
-        }else{
-            logger.error("Employé créé est vide");
-        }
+        logger.info("Employé créé : {}", employe.toString());
 
 
 
