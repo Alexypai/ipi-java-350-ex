@@ -6,15 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-
-import com.ipiecoles.java.java350.service.EmployeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Entity
 public class Employe {
 
-    private static Logger logger = LoggerFactory.getLogger(EmployeService.class);
+    private static Logger logger = LoggerFactory.getLogger(Employe.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
