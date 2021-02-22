@@ -125,21 +125,11 @@ class EmployeTest {
         Assertions.assertThat(NewSalaire).isEqualTo(1700d);
     }
 
-    @Test
-    public void testAaugmenterSalaireSalaireNull(){
-        //GIVEN
-        Employe employe = new Employe("Doe","John",null,LocalDate.now(),null,1,1.0);
-        Double pourcentage = 0.5;
-        //WHEN
-        Double NewSalaire = employe.augmenterSalaire(pourcentage);
-        Double salaireAttendu = Math.round(Entreprise.SALAIRE_BASE * pourcentage) + Entreprise.SALAIRE_BASE;
-        //THEN
-        Assertions.assertThat(NewSalaire).isEqualTo(salaireAttendu);
-    }
 
     @ParameterizedTest(name = "pourcentage{0}, salaire {1}, NewSalaire{2}")
     @CsvSource({"10,'1500d',1673.22",
                 "-10,'1700d',1700",
+                "20,,1825.22",
                 "0.001,'1700d',1700",
                 "-0.001,'1700d',1700",
                 "0.1,'1500d',1523.22",
